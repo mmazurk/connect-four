@@ -49,7 +49,7 @@
 const WIDTH = 7;
 const HEIGHT = 6;
 
-const currPlayer = 1; // active player: 1 or 2
+let currPlayer = 1; // active player: 1 or 2
 const board = []; // array of rows, each row is array of cells  (board[y][x])
 
 /** makeBoard: create in-JS board structure:
@@ -101,7 +101,16 @@ function makeHtmlBoard() {
 
 function findSpotForCol(x) {
   // TODO: write the real version of this, rather than always returning 0
-  return 0;
+
+  // first, get the value of y or column you are in currently
+  // iterate over x and return the index where you find a null
+  // 0-0 null?
+  // 0-1 null?
+  // 0-2 null?
+  // 0-3 null? 
+  // if you don't find any nulls, then return null
+
+    return 0; // return the next available y spot
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
@@ -111,6 +120,14 @@ function placeInTable(y, x) {
   const newDiv = document.createElement("div"); 
   newDiv.setAttribute("class", "piece");
   newDiv.classList.add("p" + currPlayer);
+  
+  // x is the column clicked
+  // y is row we will put the piece
+  // select the x-y pair and append the piece
+  let appendElement = document.getElementById(y + "-" + x);
+  console.log(appendElement);
+  appendElement.append(newDiv);
+
 }
 
 /** endGame: announce game end */
@@ -123,7 +140,7 @@ function endGame(msg) {
 
 function handleClick(evt) {
   // get x from ID of clicked cell
-  const x = +evt.target.id;
+  const x = +evt.target.id; // the + casts evt.target.id as a numeric value
 
   // get next spot in column (if none, ignore click)
   const y = findSpotForCol(x);
@@ -134,6 +151,8 @@ function handleClick(evt) {
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
   placeInTable(y, x);
+  // change the in memory board to add "blue" or "red" to array
+  currPlayer === 1 ? board[y][x] = "blue": board[y][x] = "red";
 
   // check for win
   if (checkForWin()) {
@@ -142,9 +161,19 @@ function handleClick(evt) {
 
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
+  const spacesLeft = board.map((arr) => {
+    return arr.some((items) => {
+      return items === null;
+    }) 
+  }) // an array of Boolean
+
+  // if all members spacesLeft array are false, then end the game  
+  if(!spacesLeft.some((item) => item === true)) { endGame() }
 
   // switch players
   // TODO: switch currPlayer 1 <-> 2
+  currPlayer === 1? currPlayer = 2 : currPlayer = 1;
+
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
