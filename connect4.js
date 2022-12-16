@@ -28,13 +28,13 @@
 // start the game and designate a first player
 // listen for click on a box
 // when a box is clicked:
-  // check if box is already filled (by checking array in memory)
-  // if yes, do nothing
-  // if no, then add piece to the box (update array in memory and page)
+// check if box is already filled (by checking array in memory)
+// if yes, do nothing
+// if no, then add piece to the box (update array in memory and page)
 // after piece is added (by updating the array in memory) 
-  // check if the game has been won (four in a row; check array in memory)
-  // if yes, stop the game and alert the users
-  // if no, then set piece to be the next player
+// check if the game has been won (four in a row; check array in memory)
+// if yes, stop the game and alert the users
+// if no, then set piece to be the next player
 
 // Zak says: 
 
@@ -59,16 +59,15 @@ const board = []; // array of rows, each row is array of cells  (board[y][x])
 function makeBoard() {
   // TODO: set "board" to empty HEIGHT x WIDTH matrix array
   let rowArray = new Array(WIDTH);
-  for(let i = 0; i < rowArray.length; i++) {
+  for (let i = 0; i < rowArray.length; i++) {
     rowArray[i] = null;
   }
-  for(let i = 0; i < HEIGHT; i++){
+  for (let i = 0; i < HEIGHT; i++) {
     board.push([...rowArray])
   }
 }
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
-
 function makeHtmlBoard() {
   // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
   const htmlBoard = document.getElementById("board");
@@ -102,25 +101,36 @@ function makeHtmlBoard() {
 function findSpotForCol(x) {
   // TODO: write the real version of this, rather than always returning 0
 
-  // first, get the value of y or column you are in currently
-  // iterate over x and return the index where you find a null
-  // 0-0 null?
-  // 0-1 null?
-  // 0-2 null?
-  // 0-3 null? 
-  // if you don't find any nulls, then return null
+  // x is column you are clicking
+  // use the column value to pull an array of 
+  // board[0][x]
+  // board[1][x]
+  // board[2][x]
+  // board[3][x]
+  // board[4][x]
+  // board[5][x]
 
-    return 0; // return the next available y spot
+  let columnStack = [];
+  for (let i = 0; i < HEIGHT; i++) {
+    columnStack.push(board[i][x])
+  }
+
+  // now find the index where there is an open spot and return it
+  // otherwise, return null
+  nextAvailable = columnStack.findIndex((item) => item === null)
+  if (nextAvailable === -1) {
+    return null;
+  } else { return nextAvailable };
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
 
 function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
-  const newDiv = document.createElement("div"); 
+  const newDiv = document.createElement("div");
   newDiv.setAttribute("class", "piece");
   newDiv.classList.add("p" + currPlayer);
-  
+
   // x is the column clicked
   // y is row we will put the piece
   // select the x-y pair and append the piece
@@ -134,6 +144,8 @@ function placeInTable(y, x) {
 
 function endGame(msg) {
   // TODO: pop up alert message
+  alert(msg);
+  
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -152,7 +164,7 @@ function handleClick(evt) {
   // TODO: add line to update in-memory board
   placeInTable(y, x);
   // change the in memory board to add "blue" or "red" to array
-  currPlayer === 1 ? board[y][x] = "blue": board[y][x] = "red";
+  currPlayer === 1 ? board[y][x] = 1 : board[y][x] = 2;
 
   // check for win
   if (checkForWin()) {
@@ -164,15 +176,15 @@ function handleClick(evt) {
   const spacesLeft = board.map((arr) => {
     return arr.some((items) => {
       return items === null;
-    }) 
+    })
   }) // an array of Boolean
 
   // if all members spacesLeft array are false, then end the game  
-  if(!spacesLeft.some((item) => item === true)) { endGame() }
+  if (!spacesLeft.some((item) => item === true)) { endGame("It's a tie!!") }
 
   // switch players
   // TODO: switch currPlayer 1 <-> 2
-  currPlayer === 1? currPlayer = 2 : currPlayer = 1;
+  currPlayer === 1 ? currPlayer = 2 : currPlayer = 1;
 
 }
 
