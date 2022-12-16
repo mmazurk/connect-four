@@ -58,34 +58,42 @@ const board = []; // array of rows, each row is array of cells  (board[y][x])
 
 function makeBoard() {
   // TODO: set "board" to empty HEIGHT x WIDTH matrix array
+  let rowArray = new Array(WIDTH);
+  for(let i = 0; i < rowArray.length; i++) {
+    rowArray[i] = null;
+  }
+  for(let i = 0; i < HEIGHT; i++){
+    board.push([...rowArray])
+  }
 }
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
 function makeHtmlBoard() {
   // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
+  const htmlBoard = document.getElementById("board");
 
   // TODO: add comment for this code
-  const top = document.createElement("tr");
-  top.setAttribute("id", "column-top");
-  top.addEventListener("click", handleClick);
+  const top = document.createElement("tr"); // create a table row element called top
+  top.setAttribute("id", "column-top"); // set the id attribute of the top element to "column-top"
+  top.addEventListener("click", handleClick); // add an event listener that runs callback handleClick()
 
-  for (let x = 0; x < WIDTH; x++) {
-    const headCell = document.createElement("td");
-    headCell.setAttribute("id", x);
-    top.append(headCell);
+  for (let x = 0; x < WIDTH; x++) { // iterate over the WIDTH of the table (7) and ...
+    let headCell = document.createElement("td"); // create table cell element
+    headCell.setAttribute("id", x); // set the id of each cell to the value of x
+    top.append(headCell); // append the cell to the row, then on to the next iteration
   }
-  htmlBoard.append(top);
+  htmlBoard.append(top); // append the row of seven new cells (with id = 0:7) to the table
 
   // TODO: add comment for this code
-  for (let y = 0; y < HEIGHT; y++) {
-    const row = document.createElement("tr");
-    for (let x = 0; x < WIDTH; x++) {
-      const cell = document.createElement("td");
-      cell.setAttribute("id", `${y}-${x}`);
-      row.append(cell);
+  for (let y = 0; y < HEIGHT; y++) { // iterate over the HEIGHT of the table (6) and ...
+    let row = document.createElement("tr"); // create a new row
+    for (let x = 0; x < WIDTH; x++) { // within each new row 
+      let cell = document.createElement("td"); // create a new cell
+      cell.setAttribute("id", `${y}-${x}`); // set the id attribute to 'row-colum' value
+      row.append(cell); // append the cell to the row and go to next iteration
     }
-    htmlBoard.append(row);
+    htmlBoard.append(row); // append the new labeled row "0-1", "0-2", "0-3" ... then "1-1" ... 
   }
 }
 
@@ -100,6 +108,9 @@ function findSpotForCol(x) {
 
 function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
+  const newDiv = document.createElement("div"); 
+  newDiv.setAttribute("class", "piece");
+  newDiv.classList.add("p" + currPlayer);
 }
 
 /** endGame: announce game end */
