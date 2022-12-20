@@ -37,13 +37,10 @@
 // if no, then set piece to be the next player
 
 // Zak says: 
-
 // console log as you go
 // make sure the logic is working, then you can inject HTML in the page
 // then after that you can work on the animation of the button
 // you mostly use arrow function when it's one line and you're using something like map to calculate the length of the string; so these are quick things
-
-
 
 
 const WIDTH = 7;
@@ -71,6 +68,13 @@ function makeBoard() {
 function makeHtmlBoard() {
   // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
   const htmlBoard = document.getElementById("board");
+
+
+  // ---------------------- FEEDBACK --------------------------
+  // the best code is self-documenting; you normally don't put comments on each line
+  // you can do a block comment above but that's all
+  // ---------------------- FEEDBACK --------------------------
+
 
   // TODO: add comment for this code
   const top = document.createElement("tr"); // create a table row element called top
@@ -110,13 +114,25 @@ function findSpotForCol(x) {
   // board[4][x]
   // board[5][x]
 
+  // ---------------------- FEEDBACK --------------------------
+  // just need to loop through y because you know your x already
+  // don't need to create an empty array or other data structure
+  // I need to go from height and reverse to find an empty spot
+  // Right now I'm looking top-down and finding the first empty
+  // You would need to find the first occupied and then find the one above
+  // hence, "gravity-defying" connect 4
+  // ---------------------- FEEDBACK --------------------------
+
   let columnStack = [];
   for (let i = 0; i < HEIGHT; i++) {
     columnStack.push(board[i][x])
   }
 
+  // ---------------------- FEEDBACK --------------------------
   // now find the index where there is an open spot and return it
   // otherwise, return null
+  // ---------------------- FEEDBACK --------------------------
+
   nextAvailable = columnStack.findIndex((item) => item === null)
   if (nextAvailable === -1) {
     return null;
@@ -160,10 +176,23 @@ function handleClick(evt) {
     return;
   }
 
+  // ---------------------- FEEDBACK --------------------------
+  // in an INTERVIEW ... 
+  // you need to be able to talk about maintainability and extensibility
+  // will this code break
+  // can you change it without tons of rewrites? 
+  // ---------------------- FEEDBACK --------------------------
+
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
   placeInTable(y, x);
+
+  // ---------------------- FEEDBACK --------------------------
+  // you don't have to do a terinary there; just say board[y][x] = currentPlayer before you place in the table
+  // update the data source and THEN update the visual; visual should follow data source
   // change the in memory board to add "blue" or "red" to array
+  // ---------------------- FEEDBACK --------------------------
+
   currPlayer === 1 ? board[y][x] = 1 : board[y][x] = 2;
 
   // check for win
@@ -173,11 +202,24 @@ function handleClick(evt) {
 
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
+
+  // ---------------------- FEEDBACK --------------------------
+  // if you see item that is null just break out of the loop
+  // the minute a find a null, then it's not a tie
+  // you don't need to check the whole thing
+  // you could flatten the array and check for a single null
+  // you don't need to check for === true
+  // getting it to work is 25% 
+  // then you refactor 2 - 3 times
+  // then you send it to another engineer to review, they comment
+  // are you solving the problem? are writing maintainable code? 
+  // ---------------------- FEEDBACK --------------------------
+  
   const spacesLeft = board.map((arr) => {
     return arr.some((items) => {
       return items === null;
     })
-  }) // an array of Boolean
+  }) // an array of Boolean 
 
   // if all members spacesLeft array are false, then end the game  
   if (!spacesLeft.some((item) => item === true)) { endGame("It's a tie!!") }
@@ -205,6 +247,14 @@ function checkForWin() {
         board[y][x] === currPlayer
     );
   }
+
+  // ---------------------- FEEDBACK --------------------------
+  // Extra information ... 
+  // You could just generate all the winning combinations once you know the size of the board
+  // then you could check against those every time a person plays
+  // rather than run this long thing for every click
+  // you would put the winning combinations in an array
+  // ---------------------- FEEDBACK --------------------------
 
   // TODO: read and understand this code. Add comments to help you.
 
