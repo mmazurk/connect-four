@@ -121,22 +121,31 @@ function findSpotForCol(x) {
   // Right now I'm looking top-down and finding the first empty
   // You would need to find the first occupied and then find the one above
   // hence, "gravity-defying" connect 4
-  // ---------------------- FEEDBACK --------------------------
 
-  let columnStack = [];
-  for (let i = 0; i < HEIGHT; i++) {
-    columnStack.push(board[i][x])
-  }
+  // FIXED
 
   // ---------------------- FEEDBACK --------------------------
-  // now find the index where there is an open spot and return it
-  // otherwise, return null
-  // ---------------------- FEEDBACK --------------------------
+  for(let i = HEIGHT - 1; i > -1; i--) {
+    if(!board[i][x]) {
+    console.log(i);
+    return(i)
+  } 
+}
+  return null;
+//   let columnStack = [];
+//   for (let i = 0; i < HEIGHT; i++) {
+//     columnStack.push(board[i][x])
+//   }
 
-  nextAvailable = columnStack.findIndex((item) => item === null)
-  if (nextAvailable === -1) {
-    return null;
-  } else { return nextAvailable };
+//   // ---------------------- FEEDBACK --------------------------
+//   // now find the index where there is an open spot and return it
+//   // otherwise, return null
+//   // ---------------------- FEEDBACK --------------------------
+
+//   nextAvailable = columnStack.findIndex((item) => item === null)
+//   if (nextAvailable === -1) {
+//     return null;
+//   } else { return nextAvailable };
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
@@ -183,6 +192,8 @@ function handleClick(evt) {
   // can you change it without tons of rewrites? 
   // ---------------------- FEEDBACK --------------------------
 
+  board[y][x] = currPlayer;
+
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
   placeInTable(y, x);
@@ -193,7 +204,7 @@ function handleClick(evt) {
   // change the in memory board to add "blue" or "red" to array
   // ---------------------- FEEDBACK --------------------------
 
-  currPlayer === 1 ? board[y][x] = 1 : board[y][x] = 2;
+  // currPlayer === 1 ? board[y][x] = 1 : board[y][x] = 2;
 
   // check for win
   if (checkForWin()) {
